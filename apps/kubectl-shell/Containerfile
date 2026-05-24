@@ -1,8 +1,10 @@
 FROM mirror.gcr.io/alpine:latest AS builder
 ARG kubectl_release=1.36.1
+# TARGETARCH is automatically set by buildx (e.g. amd64, arm64, arm)
+ARG TARGETARCH
 RUN apk --no-cache add wget ca-certificates \
   && wget -O /usr/local/bin/kubectl \
-  "https://dl.k8s.io/v${kubectl_release}/bin/linux/amd64/kubectl" \
+  "https://dl.k8s.io/v${kubectl_release}/bin/linux/${TARGETARCH}/kubectl" \
   && chmod +x /usr/local/bin/kubectl
 
 FROM mirror.gcr.io/alpine:latest
