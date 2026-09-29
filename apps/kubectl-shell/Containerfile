@@ -1,5 +1,5 @@
 FROM mirror.gcr.io/alpine:latest AS builder
-ARG kubectl_release=1.36.1
+ARG kubectl_release=1.36.5
 # TARGETARCH is automatically set by buildx (e.g. amd64, arm64, arm)
 ARG TARGETARCH
 RUN apk --no-cache add wget ca-certificates \
