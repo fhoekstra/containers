@@ -1,0 +1,17 @@
+FROM node:alpine AS builder
+
+ENV NODE_ENV=production
+ENV OOYE_DATADIR=/usr/src/app
+WORKDIR /usr/src/app
+RUN wget https://git.shork.ch/oci-images/out-of-your-element/raw/branch/main/entrypoint.sh
+COPY --chown=node:node . .
+RUN apk add --no-cache python3 make build-base \
+  && npm ci
+
+FROM node:alpine AS runner
+COPY --from=builder --chmod=0755 /usr/src/app/entrypoint.sh /entrypoint.sh
+WORKDIR /usr/src/app
+COPY --chown=node:node --from=builder /usr/src/app/ .
+
+USER node
+ENTRYPOINT ["/entrypoint.sh"]
