@@ -28,6 +28,7 @@ sudo docker buildx inspect --bootstrap
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 git clone --depth 1 --branch "$NEWEST_VERSION" "$UPSTREAM" "$TMP_DIR/src"
+cp ./entrypoint.sh "$TMP_DIR/src/entrypoint.sh"
 
 sudo docker buildx build "$TMP_DIR/src" \
   --file ./Containerfile \
