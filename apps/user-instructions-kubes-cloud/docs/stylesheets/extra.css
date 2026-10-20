@@ -1,0 +1,7 @@
+/* Screenshots: responsive (the source md uses fixed width/height attributes
+   which overflow on phones, the main audience of these instructions) */
+.md-typeset img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}

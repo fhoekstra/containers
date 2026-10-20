@@ -1,0 +1,25 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:recommended",
+    "docker:enableMajor",
+    "docker:pinDigests",
+    "helpers:pinGitHubActionDigests",
+    ":automergeBranch",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":separatePatchReleases",
+    ":timezone(Europe/Amsterdam)",
+  ],
+  dependencyDashboardTitle: "Renovate Dashboard 🤖",
+  suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
+  timezone: "Europe/Amsterdam",
+  schedule: ["every weekend", "* * * * 2"],
+  minimumReleaseAge: "2 days",
+  minimumReleaseAgeBehaviour: "timestamp-optional",
+  internalChecksFilter: "strict",
+  registryAliases: {
+    "mirror.gcr.io": "docker.io",
+  },
+  ignorePaths: ["**/.env"],
+}

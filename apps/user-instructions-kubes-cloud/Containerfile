@@ -1,0 +1,26 @@
+FROM python:3.13-alpine AS build
+WORKDIR /docs
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY mkdocs.yml ./
+COPY docs/ ./docs/
+RUN mkdocs build --strict --site-dir /site
+
+FROM caddy:2-alpine
+# Strip file capabilities from the caddy binary so it can run with
+# `capabilities: drop: ALL` in Kubernetes (ref: https://www.ayvazyan.net/2026/02/caddy/)
+RUN apk add --no-cache libcap-setcap && setcap -r /usr/bin/caddy && apk del libcap-setcap
+COPY --from=build --chown=1000:1000 /site /srv
+USER 1000:1000
+EXPOSE 8080
+# No admin endpoint, no storage writes; all writable dirs point at /tmp
+# so the container is read-only-root-fs safe
+ENV CADDY_ADMIN=off \
+    CADDY_STORAGE_CHECK=off \
+    CADDY_STORAGE_CLEAN_INTERVAL=off \
+    XDG_DATA_HOME=/tmp \
+    XDG_CONFIG_HOME=/tmp \
+    HOME=/tmp
+LABEL org.opencontainers.image.source="https://github.com/fhoekstra/containers" \
+      org.opencontainers.image.description="kubes.cloud user instructions site"
+CMD ["caddy", "file-server", "--listen", ":8080", "--root", "/srv"]

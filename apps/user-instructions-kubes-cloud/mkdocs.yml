@@ -1,0 +1,42 @@
+---
+site_name: kubes.cloud instructions
+site_url: https://guide.kubes.cloud
+site_description: First-time setup guides for kubes.cloud accounts
+
+theme:
+  name: material
+  features:
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+    - toc.follow
+  palette:
+    # "Auto" is the default: follows the OS light/dark preference
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_css:
+  - stylesheets/extra.css

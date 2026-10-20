@@ -1,0 +1,2 @@
+# Renovate keeps this fresh; bump only manually when needed
+mkdocs-material==9.7.7
